@@ -4,8 +4,6 @@ Site de estudo composto por três páginas, criado a partir dos temas trabalhado
 `glossario_v3.html` (biblioteca de componentes) e `T7_glossario-design.html`
 (glossário visual de design systems) do curso mob07.
 
-> Este é o **README detalhado**. Para uma versão curta, veja [`README-RESUMO.md`](./README-RESUMO.md).
-
 ---
 
 ## 1. O que o projeto faz
