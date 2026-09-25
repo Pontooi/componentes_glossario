@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glossário de Design · Tema 07</title>
+<meta name="description" content="Glossário visual de Design Systems e UI, organizado por categoria.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Sora:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<script>
+  (function () {
+    if (localStorage.getItem("tema-preferido") === "light") {
+      document.documentElement.setAttribute("data-theme", "light");
+    }
+  })();
+</script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="brand">🎨 Tema 07 <small>COMPONENTES &amp; DESIGN</small></a>
+      <nav class="nav-links">
+        <a href="index.html">Início</a>
+        <a href="componentes.html">Componentes</a>
+        <a href="glossario.html" class="active">Glossário</a>
+      </nav>
+      <button id="theme-toggle" class="theme-toggle" aria-pressed="false">
+        <span class="icon">🌙</span><span class="label">Escuro</span>
+      </button>
+    </div>
+  </header>
+
+  <section class="hero" style="padding: 56px 0 32px;">
+    <div class="container">
+      <span class="eyebrow-tag">enciclopédia de ui</span>
+      <h1 style="max-width: 22ch; font-size: clamp(1.8rem, 3.5vw, 2.6rem);">Glossário visual de Design Systems &amp; UI</h1>
+      <p class="lede">Nomenclatura, Atomic Design e vocabulário de interface, explicados em linguagem simples e com exemplos.</p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="toolbar">
+        <div class="search-box">
+          <span>🔍</span>
+          <input id="busca-input" type="text" placeholder="Buscar termo (ex.: modal, breadcrumb, token)...">
+        </div>
+        <div class="filter-chips" id="filtro-categorias"></div>
+      </div>
+      <p class="result-count" id="resultado-contador"></p>
+
+      <div class="glossary-list" id="glossario-lista"></div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container">
+      <span>Projeto de estudo — Tema 07 (mob07)</span>
+      <span>HTML · CSS · JavaScript</span>
+    </div>
+  </footer>
+
+  <button id="back-to-top" class="back-to-top" aria-label="Voltar ao topo">↑</button>
+
+  <script src="../js/theme.js"></script>
+  <script src="../js/glossario.js"></script>
+</body>
+</html>
