@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tema 07 · Componentes &amp; Glossário de Design</title>
+<meta name="description" content="Biblioteca de componentes de interface e glossário visual de Design Systems, com tema claro/escuro. Arquivo único.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Sora:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>
+  (function () {
+    if (localStorage.getItem("tema-preferido") === "light") {
+      document.documentElement.setAttribute("data-theme", "light");
+    }
+  })();
+</script>
+<style>
+:root {
+  --bg: #120e1c; --bg-elevated: #1b1530; --bg-elevated-2: #241c3d;
+  --surface: #1e1833; --surface-hover: #2a2147; --border: #35294f; --border-soft: #2a2147;
+  --text: #f1ecfb; --text-muted: #b6a9d6; --text-faint: #7f6fa3;
+  --accent: #a475f7; --accent-strong: #c9a3ff; --accent-soft: #6c4ab8; --accent-contrast: #120e1c;
+  --success: #6fd7a3; --warning: #f5c76b; --danger: #f3768a; --info: #7bc3f0;
+  --shadow: 0 12px 32px rgba(8, 5, 18, 0.55);
+  --radius-sm: 6px; --radius-md: 10px; --radius-lg: 16px;
+  --font-display: "Fraunces", "Georgia", serif;
+  --font-body: "Sora", "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", "Consolas", monospace;
+  color-scheme: dark;
+}
+[data-theme="light"] {
+  --bg: #f7f4fb; --bg-elevated: #ffffff; --bg-elevated-2: #efe9f9;
+  --surface: #ffffff; --surface-hover: #f1ebfa; --border: #ddd0f2; --border-soft: #e8dff6;
+  --text: #251b3d; --text-muted: #5d4d7c; --text-faint: #8779a3;
+  --accent: #7c3aed; --accent-strong: #5b21b6; --accent-soft: #ddd0f7; --accent-contrast: #ffffff;
+  --shadow: 0 12px 28px rgba(124, 58, 237, 0.12);
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: 16px; line-height: 1.55; transition: background 0.25s ease, color 0.25s ease; }
+a { color: inherit; }
+img { max-width: 100%; }
+.container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+.site-header { position: sticky; top: 0; z-index: 50; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-soft); }
+.site-header .container { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 14px; padding-bottom: 14px; }
+.brand { display: flex; align-items: baseline; gap: 10px; font-family: var(--font-display); font-size: 1.15rem; font-weight: 600; text-decoration: none; color: var(--text); background: none; border: none; cursor: pointer; padding: 0; }
+.brand small { font-family: var(--font-mono); font-size: 0.68rem; font-weight: 400; color: var(--text-faint); letter-spacing: 0.04em; }
+.nav-links { display: flex; align-items: center; gap: 4px; }
+.nav-links button { text-decoration: none; color: var(--text-muted); font-size: 0.92rem; padding: 8px 14px; border-radius: 999px; transition: background 0.15s ease, color 0.15s ease; background: none; border: none; cursor: pointer; font-family: var(--font-body); }
+.nav-links button:hover { color: var(--text); background: var(--surface-hover); }
+.nav-links button.active { color: var(--accent-contrast); background: var(--accent); }
+.theme-toggle { display: inline-flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 8px 14px; border-radius: 999px; cursor: pointer; font-family: var(--font-body); font-size: 0.85rem; transition: border-color 0.15s ease, transform 0.15s ease; }
+.theme-toggle:hover { border-color: var(--accent); }
+.theme-toggle:active { transform: scale(0.96); }
+.theme-toggle .icon { font-size: 1rem; line-height: 1; }
+.view { display: none; }
+.view.active { display: block; }
+.hero { padding: 88px 0 64px; border-bottom: 1px solid var(--border-soft); position: relative; overflow: hidden; }
+.hero::before { content: ""; position: absolute; inset: -40% -10% auto; height: 480px; background: radial-gradient(closest-side, color-mix(in srgb, var(--accent) 26%, transparent), transparent 70%); pointer-events: none; }
+.hero .container { position: relative; }
+.hero.compact { padding: 56px 0 32px; }
+.eyebrow-tag { display: inline-block; font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-strong); background: color-mix(in srgb, var(--accent) 16%, transparent); border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent); padding: 5px 12px; border-radius: 999px; margin-bottom: 22px; }
+.hero h1 { font-family: var(--font-display); font-size: clamp(2.2rem, 4.5vw, 3.4rem); line-height: 1.08; margin: 0 0 20px; max-width: 14ch; font-weight: 600; }
+.hero.compact h1 { max-width: 22ch; font-size: clamp(1.8rem, 3.5vw, 2.6rem); }
+.hero p.lede { max-width: 56ch; color: var(--text-muted); font-size: 1.08rem; margin: 0 0 32px; }
+.hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+.btn { display: inline-flex; align-items: center; gap: 8px; border: none; border-radius: var(--radius-md); padding: 12px 22px; font-family: var(--font-body); font-size: 0.95rem; font-weight: 600; cursor: pointer; text-decoration: none; transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease, border-color 0.12s ease; }
+.btn-primary { background: var(--accent); color: var(--accent-contrast); }
+.btn-primary:hover { background: var(--accent-strong); box-shadow: 0 8px 20px color-mix(in srgb, var(--accent) 45%, transparent); }
+.btn-secondary { background: transparent; border: 1px solid var(--border); color: var(--text); }
+.btn-secondary:hover { border-color: var(--accent); color: var(--accent-strong); }
+.btn-danger { background: var(--danger); color: #2a0810; }
+.btn:active { transform: translateY(1px); }
+.btn-sm { padding: 7px 14px; font-size: 0.82rem; }
+.btn-icon { width: 40px; height: 40px; padding: 0; justify-content: center; border-radius: 999px; background: var(--surface); border: 1px solid var(--border); color: var(--text); }
+.btn-icon:hover { border-color: var(--accent); }
+.stat-row { display: flex; gap: 40px; margin-top: 56px; flex-wrap: wrap; }
+.stat-row .stat b { display: block; font-family: var(--font-display); font-size: 1.9rem; color: var(--accent-strong); }
+.stat-row .stat span { font-size: 0.82rem; color: var(--text-faint); }
+.section { padding: 56px 0; }
+.section.no-top-pad { padding-top: 0; }
+.section-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 32px; flex-wrap: wrap; }
+.section-head h2 { font-family: var(--font-display); font-size: 1.7rem; margin: 0 0 8px; }
+.section-head p { color: var(--text-muted); margin: 0; max-width: 56ch; }
+.card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.info-card { background: var(--surface); border: 1px solid var(--border-soft); border-radius: var(--radius-lg); padding: 24px; }
+.info-card h3 { margin: 0 0 10px; font-size: 1.05rem; }
+.info-card p { margin: 0; color: var(--text-muted); font-size: 0.92rem; }
+.info-card .tag { display: inline-block; font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent-strong); margin-bottom: 12px; }
+.toolbar { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-bottom: 28px; position: sticky; top: 66px; z-index: 30; background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(8px); padding: 12px 0; }
+.search-box { flex: 1 1 240px; display: flex; align-items: center; gap: 10px; background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 10px 18px; }
+.search-box input { flex: 1; background: none; border: none; outline: none; color: var(--text); font-family: var(--font-body); font-size: 0.95rem; }
+.search-box input::placeholder { color: var(--text-faint); }
+.filter-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.chip { border: 1px solid var(--border); background: var(--surface); color: var(--text-muted); padding: 8px 16px; border-radius: 999px; font-size: 0.82rem; cursor: pointer; transition: all 0.15s ease; white-space: nowrap; }
+.chip:hover { border-color: var(--accent); color: var(--text); }
+.chip.active { background: var(--accent); border-color: var(--accent); color: var(--accent-contrast); }
+.result-count { color: var(--text-faint); font-size: 0.82rem; margin: -14px 0 20px; }
+.demo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 20px; }
+.demo-card { background: var(--surface); border: 1px solid var(--border-soft); border-radius: var(--radius-lg); overflow: hidden; display: flex; flex-direction: column; }
+.demo-card-head { padding: 18px 20px 0; }
+.demo-card-head .cat { font-family: var(--font-mono); font-size: 0.68rem; color: var(--accent-strong); text-transform: lowercase; }
+.demo-card-head h3 { margin: 6px 0 6px; font-size: 1.05rem; }
+.demo-card-head p { margin: 0 0 16px; font-size: 0.86rem; color: var(--text-muted); }
+.demo-stage { background: var(--bg-elevated); border-top: 1px solid var(--border-soft); border-bottom: 1px solid var(--border-soft); padding: 24px 20px; display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; min-height: 92px; }
+.demo-tabs { display: flex; border-bottom: 1px solid var(--border-soft); }
+.demo-tab-btn { flex: 1; background: none; border: none; color: var(--text-faint); padding: 10px; font-size: 0.78rem; font-family: var(--font-mono); cursor: pointer; border-bottom: 2px solid transparent; }
+.demo-tab-btn.active { color: var(--accent-strong); border-bottom-color: var(--accent); }
+.demo-code { display: none; margin: 0; padding: 16px 20px; font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted); background: var(--bg); overflow-x: auto; white-space: pre; }
+.demo-code.visible { display: block; }
+.demo-stage.hidden-panel { display: none; }
+.mini-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--accent-soft); color: var(--accent-strong); border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent); padding: 4px 12px; border-radius: 999px; font-size: 0.78rem; }
+[data-theme="light"] .mini-badge { color: var(--accent-strong); background: color-mix(in srgb, var(--accent) 14%, transparent); }
+.mini-alert { display: flex; gap: 10px; align-items: flex-start; background: color-mix(in srgb, var(--info) 14%, transparent); border: 1px solid color-mix(in srgb, var(--info) 40%, transparent); color: var(--text); padding: 10px 14px; border-radius: var(--radius-md); font-size: 0.85rem; width: 100%; }
+.mini-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 14px 16px; width: 100%; max-width: 220px; }
+.mini-card h4 { margin: 0 0 4px; font-size: 0.92rem; }
+.mini-card p { margin: 0; font-size: 0.8rem; color: var(--text-muted); }
+.switch { position: relative; width: 42px; height: 24px; display: inline-block; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.switch .track { position: absolute; inset: 0; background: var(--border); border-radius: 999px; transition: 0.2s; cursor: pointer; }
+.switch .track::before { content: ""; position: absolute; height: 18px; width: 18px; left: 3px; top: 3px; background: white; border-radius: 50%; transition: 0.2s; }
+.switch input:checked + .track { background: var(--accent); }
+.switch input:checked + .track::before { transform: translateX(18px); }
+.progress-track { width: 100%; height: 8px; border-radius: 999px; background: var(--border-soft); overflow: hidden; }
+.progress-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--accent-soft), var(--accent)); width: 62%; }
+.tabs-mini { display: inline-flex; background: var(--bg); border: 1px solid var(--border); border-radius: 999px; padding: 3px; }
+.tabs-mini button { border: none; background: none; color: var(--text-muted); padding: 6px 14px; border-radius: 999px; font-size: 0.8rem; cursor: pointer; }
+.tabs-mini button.active { background: var(--accent); color: var(--accent-contrast); }
+.tooltip-demo { position: relative; display: inline-block; }
+.tooltip-demo .bubble { position: absolute; bottom: 130%; left: 50%; transform: translateX(-50%); background: var(--bg-elevated-2); border: 1px solid var(--border); color: var(--text); padding: 6px 12px; border-radius: var(--radius-sm); font-size: 0.78rem; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.15s ease; }
+.tooltip-demo:hover .bubble { opacity: 1; }
+.skeleton-line { height: 12px; border-radius: 4px; background: linear-gradient(90deg, var(--border-soft) 25%, var(--surface-hover) 50%, var(--border-soft) 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; margin-bottom: 8px; }
+@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+.spinner { width: 26px; height: 26px; border-radius: 50%; border: 3px solid var(--border-soft); border-top-color: var(--accent); animation: spin 0.7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent-strong)); display: flex; align-items: center; justify-content: center; color: var(--accent-contrast); font-weight: 600; font-size: 0.85rem; }
+.breadcrumb-mini { display: flex; gap: 6px; font-size: 0.82rem; color: var(--text-faint); }
+.breadcrumb-mini a { color: var(--text-muted); text-decoration: none; }
+.pagination-mini { display: flex; gap: 6px; }
+.pagination-mini button { width: 30px; height: 30px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--surface); color: var(--text-muted); cursor: pointer; font-size: 0.82rem; }
+.pagination-mini button.active { background: var(--accent); border-color: var(--accent); color: var(--accent-contrast); }
+.input-mini, .select-mini, .textarea-mini { width: 100%; max-width: 220px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text); padding: 9px 12px; font-family: var(--font-body); font-size: 0.85rem; }
+.checkbox-row, .radio-row { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--text-muted); }
+.accordion-mini { width: 100%; border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; }
+.accordion-mini .acc-item + .acc-item { border-top: 1px solid var(--border-soft); }
+.accordion-mini button { width: 100%; text-align: left; background: var(--surface); border: none; color: var(--text); padding: 12px 14px; font-size: 0.85rem; cursor: pointer; display: flex; justify-content: space-between; }
+.accordion-mini .acc-panel { max-height: 0; overflow: hidden; transition: max-height 0.2s ease; font-size: 0.8rem; color: var(--text-muted); background: var(--bg-elevated); }
+.accordion-mini .acc-panel p { margin: 0; padding: 0 14px 12px; }
+.accordion-mini .acc-item.open .acc-panel { max-height: 120px; }
+.toast-mini { display: flex; align-items: center; gap: 10px; background: var(--bg-elevated-2); border: 1px solid var(--border); border-left: 3px solid var(--success); padding: 10px 16px; border-radius: var(--radius-sm); font-size: 0.82rem; }
+.modal-backdrop-mini { position: absolute; inset: 0; background: color-mix(in srgb, black 55%, transparent); display: flex; align-items: center; justify-content: center; }
+.modal-mini { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px 18px; width: 220px; box-shadow: var(--shadow); }
+.modal-mini h4 { margin: 0 0 6px; font-size: 0.92rem; }
+.modal-mini p { margin: 0 0 12px; font-size: 0.8rem; color: var(--text-muted); }
+.rating-mini { display: flex; gap: 3px; font-size: 1.1rem; color: var(--accent); }
+.slider-mini { width: 100%; max-width: 200px; accent-color: var(--accent); }
+.table-mini { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+.table-mini th, .table-mini td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--border-soft); }
+.table-mini th { color: var(--text-faint); font-weight: 500; font-family: var(--font-mono); font-size: 0.7rem; }
+.stepper-mini { display: flex; align-items: center; gap: 6px; }
+.stepper-mini .dot { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; border: 1px solid var(--border); color: var(--text-faint); }
+.stepper-mini .dot.done { background: var(--accent); border-color: var(--accent); color: var(--accent-contrast); }
+.stepper-mini .line { width: 20px; height: 1px; background: var(--border); }
+.drawer-mini { position: absolute; top: 0; right: 0; bottom: 0; width: 120px; background: var(--bg-elevated); border-left: 1px solid var(--border); padding: 14px 12px; font-size: 0.78rem; color: var(--text-muted); }
+.navbar-mini { display: flex; align-items: center; justify-content: space-between; width: 100%; background: var(--bg-elevated); border: 1px solid var(--border-soft); border-radius: var(--radius-md); padding: 10px 16px; font-size: 0.8rem; }
+.navbar-mini .links { display: flex; gap: 14px; color: var(--text-muted); }
+.glossary-list { display: flex; flex-direction: column; gap: 12px; }
+.term-row { background: var(--surface); border: 1px solid var(--border-soft); border-radius: var(--radius-md); padding: 18px 22px; display: grid; grid-template-columns: 200px 1fr; gap: 20px; align-items: start; }
+.term-row .term-name { display: flex; flex-direction: column; gap: 6px; }
+.term-row .term-name strong { font-family: var(--font-display); font-size: 1.05rem; font-weight: 600; }
+.term-row .cat { font-family: var(--font-mono); font-size: 0.66rem; color: var(--accent-strong); background: color-mix(in srgb, var(--accent) 14%, transparent); border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent); padding: 2px 9px; border-radius: 999px; width: fit-content; }
+.term-row .term-def p { margin: 0 0 8px; color: var(--text); font-size: 0.92rem; }
+.term-row .term-def .example { font-size: 0.82rem; color: var(--text-faint); font-family: var(--font-mono); }
+.site-footer { border-top: 1px solid var(--border-soft); padding: 36px 0; margin-top: 40px; color: var(--text-faint); font-size: 0.85rem; }
+.site-footer .container { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.back-to-top { position: fixed; right: 24px; bottom: 24px; width: 44px; height: 44px; border-radius: 50%; background: var(--accent); color: var(--accent-contrast); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: var(--shadow); opacity: 0; pointer-events: none; transition: opacity 0.2s ease, transform 0.2s ease; z-index: 40; }
+.back-to-top.visible { opacity: 1; pointer-events: auto; }
+.empty-state { text-align: center; padding: 60px 20px; color: var(--text-faint); }
+.empty-state .glyph { font-size: 2rem; margin-bottom: 10px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+@media (max-width: 860px) { .card-grid { grid-template-columns: 1fr; } .term-row { grid-template-columns: 1fr; } .nav-links { display: none; } .hero { padding: 64px 0 44px; } }
+@media (prefers-reduced-motion: reduce) { * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; } }
+</style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <button class="brand" data-goto="inicio">🎨 Tema 07 <small>COMPONENTES &amp; DESIGN</small></button>
+      <nav class="nav-links">
+        <button data-goto="inicio" class="active">Início</button>
+        <button data-goto="componentes">Componentes</button>
+        <button data-goto="glossario">Glossário</button>
+      </nav>
+      <button id="theme-toggle" class="theme-toggle" aria-pressed="false">
+        <span class="icon">🌙</span><span class="label">Escuro</span>
+      </button>
+    </div>
+  </header>
+
+  <section id="view-inicio" class="view active">
+    <div class="hero">
+      <div class="container">
+        <span class="eyebrow-tag">mob07 · tema 07</span>
+        <h1>Componentes de interface e vocabulário de design, em um só lugar.</h1>
+        <p class="lede">Um site de estudo com duas frentes: uma biblioteca de componentes de UI para ver e testar ao vivo, e um glossário visual dos termos mais usados em Design Systems. Feito com HTML, CSS e JavaScript puros, em um único arquivo.</p>
+        <div class="hero-actions">
+          <button class="btn btn-primary" data-goto="componentes">Ver componentes →</button>
+          <button class="btn btn-secondary" data-goto="glossario">Abrir glossário</button>
+        </div>
+        <div class="stat-row">
+          <div class="stat"><b>27</b><span>componentes interativos</span></div>
+          <div class="stat"><b>45+</b><span>termos no glossário</span></div>
+          <div class="stat"><b>6</b><span>categorias de UI</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2>Duas formas de explorar</h2>
+          <p>Cada seção tem busca e filtro por categoria, para encontrar rápido o que precisa.</p>
+        </div>
+        <div class="card-grid">
+          <div class="info-card"><span class="tag">01 · PRÁTICO</span><h3>Biblioteca de Componentes</h3><p>Botões, cards, formulários, modais, tabs e mais — cada um com demonstração ao vivo e o código pronto para copiar.</p></div>
+          <div class="info-card"><span class="tag">02 · CONCEITUAL</span><h3>Glossário de Design Systems</h3><p>Definições curtas e diretas de termos de UI, organizadas por Fundamentos, Estrutura, Navegação, Inputs, Feedback e Conteúdo.</p></div>
+          <div class="info-card"><span class="tag">03 · INTERFACE</span><h3>Tema claro / escuro</h3><p>O site abre no tema escuro com tons de roxo. Use o botão no topo para alternar para o tema claro a qualquer momento.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="view-componentes" class="view">
+    <div class="hero compact">
+      <div class="container">
+        <span class="eyebrow-tag">biblioteca</span>
+        <h1>Componentes de interface, prontos para ver e copiar</h1>
+        <p class="lede">Cada cartão tem uma demonstração ao vivo e o trecho de código correspondente. Use a busca ou os filtros para navegar por categoria.</p>
+      </div>
+    </div>
+    <div class="section no-top-pad">
+      <div class="container">
+        <div class="toolbar">
+          <div class="search-box"><span>🔍</span><input id="busca-componentes" type="text" placeholder="Buscar componente (ex.: botão, modal, tabs)..."></div>
+          <div class="filter-chips" id="filtro-componentes"></div>
+        </div>
+        <p class="result-count" id="contador-componentes"></p>
+        <div class="demo-grid" id="componentes-grid"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="view-glossario" class="view">
+    <div class="hero compact">
+      <div class="container">
+        <span class="eyebrow-tag">enciclopédia de ui</span>
+        <h1>Glossário visual de Design Systems &amp; UI</h1>
+        <p class="lede">Nomenclatura, Atomic Design e vocabulário de interface, explicados em linguagem simples e com exemplos.</p>
+      </div>
+    </div>
+    <div class="section no-top-pad">
+      <div class="container">
+        <div class="toolbar">
+          <div class="search-box"><span>🔍</span><input id="busca-glossario" type="text" placeholder="Buscar termo (ex.: modal, breadcrumb, token)..."></div>
+          <div class="filter-chips" id="filtro-glossario"></div>
+        </div>
+        <p class="result-count" id="contador-glossario"></p>
+        <div class="glossary-list" id="glossario-lista"></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container">
+      <span>Projeto de estudo — Tema 07 (mob07)</span>
+      <span>HTML · CSS · JavaScript · arquivo único</span>
+    </div>
+  </footer>
+
+  <button id="back-to-top" class="back-to-top" aria-label="Voltar ao topo">↑</button>
+
+<script>
+function irPara(view) {
+  document.querySelectorAll(".view").forEach((v) => v.classList.remove("active"));
+  document.getElementById("view-" + view).classList.add("active");
+  document.querySelectorAll(".nav-links button").forEach((b) => b.classList.toggle("active", b.dataset.goto === view));
+  window.scrollTo({ top: 0 });
+}
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll("[data-goto]").forEach((el) => el.addEventListener("click", () => irPara(el.dataset.goto)));
+});
+
+(function () {
+  const STORAGE_KEY = "tema-preferido";
+  function aplicarTema(tema) {
+    if (tema === "light") document.documentElement.setAttribute("data-theme", "light");
+    else document.documentElement.removeAttribute("data-theme");
+  }
+  function temaAtual() { return localStorage.getItem(STORAGE_KEY) || "dark"; }
+  function alternarTema() {
+    const novo = temaAtual() === "dark" ? "light" : "dark";
+    localStorage.setItem(STORAGE_KEY, novo);
+    aplicarTema(novo);
+    atualizarBotao();
+  }
+  function atualizarBotao() {
+    const botao = document.getElementById("theme-toggle");
+    if (!botao) return;
+    const escuro = temaAtual() === "dark";
+    botao.querySelector(".icon").textContent = escuro ? "🌙" : "☀️";
+    botao.querySelector(".label").textContent = escuro ? "Escuro" : "Claro";
+    botao.setAttribute("aria-pressed", String(!escuro));
+  }
+  document.addEventListener("DOMContentLoaded", function () {
+    const botao = document.getElementById("theme-toggle");
+    if (botao) { botao.addEventListener("click", alternarTema); atualizarBotao(); }
+    const topo = document.getElementById("back-to-top");
+    if (topo) {
+      window.addEventListener("scroll", function () { topo.classList.toggle("visible", window.scrollY > 480); });
+      topo.addEventListener("click", function () { window.scrollTo({ top: 0, behavior: "smooth" }); });
+    }
+  });
+})();
+
+const CATEGORIAS_COMPONENTES = [
+  { id: "todos", nome: "Todos" }, { id: "estrutura", nome: "Estrutura" }, { id: "navegacao", nome: "Navegação" },
+  { id: "inputs", nome: "Inputs" }, { id: "feedback", nome: "Feedback" }, { id: "conteudo", nome: "Conteúdo" },
+];
+
+const COMPONENTES = [
+  { id: "botoes", categoria: "inputs", titulo: "Botões", descricao: "Variações de botão para ações primárias, secundárias e destrutivas.", demo: `<button class="btn btn-primary btn-sm">Salvar</button><button class="btn btn-secondary btn-sm">Cancelar</button><button class="btn btn-danger btn-sm">Excluir</button>`, codigo: `<button class="btn btn-primary">Salvar</button>\n<button class="btn btn-secondary">Cancelar</button>\n<button class="btn btn-danger">Excluir</button>` },
+  { id: "botao-icone", categoria: "inputs", titulo: "Botão de ícone", descricao: "Ação compacta representada apenas por um ícone, com rótulo acessível.", demo: `<button class="btn-icon" aria-label="Curtir">♡</button><button class="btn-icon" aria-label="Compartilhar">↗</button>`, codigo: `<button class="btn-icon" aria-label="Curtir">♡</button>` },
+  { id: "badge", categoria: "conteudo", titulo: "Badge", descricao: "Rótulo curto para status, categorias ou contadores.", demo: `<span class="mini-badge">● Ativo</span> <span class="mini-badge">Novo</span>`, codigo: `<span class="badge">● Ativo</span>` },
+  { id: "avatar", categoria: "conteudo", titulo: "Avatar", descricao: "Representação visual de um usuário, com iniciais como alternativa a uma foto.", demo: `<div class="avatar">CA</div>`, codigo: `<div class="avatar">CA</div>` },
+  { id: "card", categoria: "estrutura", titulo: "Card", descricao: "Contêiner que agrupa conteúdo relacionado com uma borda e elevação sutil.", demo: `<div class="mini-card"><h4>Título do card</h4><p>Texto de apoio explicando o conteúdo.</p></div>`, codigo: `<div class="card">\n  <h4>Título do card</h4>\n  <p>Texto de apoio.</p>\n</div>` },
+  { id: "alerta", categoria: "feedback", titulo: "Alerta / Banner", descricao: "Mensagem de destaque para avisos, erros ou confirmações no fluxo da página.", demo: `<div class="mini-alert">ℹ️ Suas alterações foram salvas com sucesso.</div>`, codigo: `<div class="alert alert-info">\n  Suas alterações foram salvas.\n</div>` },
+  { id: "toast", categoria: "feedback", titulo: "Toast / Snackbar", descricao: "Notificação temporária que aparece sobre a interface e desaparece sozinha.", demo: `<div class="toast-mini">✅ Item adicionado ao carrinho</div>`, codigo: `<div class="toast toast-success">\n  Item adicionado ao carrinho\n</div>` },
+  { id: "progress", categoria: "feedback", titulo: "Barra de progresso", descricao: "Indica visualmente o avanço de uma tarefa ou upload.", demo: `<div class="progress-track"><div class="progress-fill"></div></div>`, codigo: `<div class="progress-track">\n  <div class="progress-fill" style="width: 62%"></div>\n</div>` },
+  { id: "spinner", categoria: "feedback", titulo: "Spinner", descricao: "Indicador de carregamento para operações sem duração definida.", demo: `<div class="spinner"></div>`, codigo: `<div class="spinner"></div>` },
+  { id: "skeleton", categoria: "feedback", titulo: "Skeleton loader", descricao: "Placeholder animado que antecipa o formato do conteúdo enquanto ele carrega.", demo: `<div style="width:100%"><div class="skeleton-line" style="width:80%"></div><div class="skeleton-line" style="width:55%"></div></div>`, codigo: `<div class="skeleton-line"></div>\n<div class="skeleton-line"></div>` },
+  { id: "switch", categoria: "inputs", titulo: "Switch (toggle)", descricao: "Alterna entre dois estados, como ligado/desligado, com resposta imediata.", demo: `<label class="switch"><input type="checkbox" checked><span class="track"></span></label>`, codigo: `<label class="switch">\n  <input type="checkbox">\n  <span class="track"></span>\n</label>` },
+  { id: "checkbox", categoria: "inputs", titulo: "Checkbox", descricao: "Seleção de uma ou mais opções independentes.", demo: `<label class="checkbox-row"><input type="checkbox" checked> Lembrar de mim</label>`, codigo: `<label>\n  <input type="checkbox"> Lembrar de mim\n</label>` },
+  { id: "radio", categoria: "inputs", titulo: "Radio button", descricao: "Seleção única entre um grupo de opções mutuamente exclusivas.", demo: `<label class="radio-row"><input type="radio" name="r1" checked> Mensal</label> <label class="radio-row"><input type="radio" name="r1"> Anual</label>`, codigo: `<input type="radio" name="plano" checked> Mensal\n<input type="radio" name="plano"> Anual` },
+  { id: "input-texto", categoria: "inputs", titulo: "Campo de texto", descricao: "Entrada de texto simples de uma linha, com rótulo e placeholder.", demo: `<input class="input-mini" type="text" placeholder="seu@email.com">`, codigo: `<input type="text" placeholder="seu@email.com">` },
+  { id: "textarea", categoria: "inputs", titulo: "Textarea", descricao: "Entrada de texto de múltiplas linhas para conteúdos mais longos.", demo: `<textarea class="textarea-mini" rows="2" placeholder="Escreva um comentário..."></textarea>`, codigo: `<textarea rows="3" placeholder="Escreva..."></textarea>` },
+  { id: "select", categoria: "inputs", titulo: "Select", descricao: "Lista suspensa para escolher uma opção entre várias predefinidas.", demo: `<select class="select-mini"><option>Minas Gerais</option><option>São Paulo</option></select>`, codigo: `<select>\n  <option>Minas Gerais</option>\n  <option>São Paulo</option>\n</select>` },
+  { id: "slider", categoria: "inputs", titulo: "Slider (range)", descricao: "Seleção de um valor numérico dentro de um intervalo, por arraste.", demo: `<input class="slider-mini" type="range" min="0" max="100" value="40">`, codigo: `<input type="range" min="0" max="100" value="40">` },
+  { id: "rating", categoria: "inputs", titulo: "Rating (estrelas)", descricao: "Avaliação por estrelas, comum em produtos e serviços.", demo: `<div class="rating-mini">★★★★☆</div>`, codigo: `<div class="rating">★★★★☆</div>` },
+  { id: "tooltip", categoria: "feedback", titulo: "Tooltip", descricao: "Texto de apoio que aparece ao passar o cursor sobre um elemento.", demo: `<span class="tooltip-demo"><button class="btn btn-secondary btn-sm">Passe o mouse</button><span class="bubble">Isto é um tooltip</span></span>`, codigo: `<span class="tooltip">\n  <button>Passe o mouse</button>\n  <span class="bubble">Texto de apoio</span>\n</span>` },
+  { id: "modal", categoria: "feedback", titulo: "Modal", descricao: "Janela sobreposta que exige atenção antes de voltar ao fluxo principal.", demo: `<div style="position:relative;width:100%;height:100px;"><div class="modal-backdrop-mini"><div class="modal-mini"><h4>Excluir item?</h4><p>Essa ação não pode ser desfeita.</p><button class="btn btn-danger btn-sm">Excluir</button></div></div></div>`, codigo: `<div class="modal">\n  <h4>Excluir item?</h4>\n  <p>Essa ação não pode ser desfeita.</p>\n</div>` },
+  { id: "accordion", categoria: "estrutura", titulo: "Accordion", descricao: "Painéis que expandem e recolhem conteúdo, economizando espaço vertical.", demo: `<div class="accordion-mini"><div class="acc-item open"><button>O que é um design system? <span>−</span></button><div class="acc-panel"><p>Um conjunto de padrões e componentes reutilizáveis.</p></div></div><div class="acc-item"><button>Como instalar? <span>+</span></button><div class="acc-panel"><p>Basta importar o CSS e o JS do projeto.</p></div></div></div>`, codigo: `<div class="accordion">\n  <button>Pergunta</button>\n  <div class="panel">Resposta</div>\n</div>` },
+  { id: "tabs", categoria: "navegacao", titulo: "Tabs (abas)", descricao: "Organiza conteúdos relacionados em painéis alternáveis, sem trocar de página.", demo: `<div class="tabs-mini"><button class="active">Perfil</button><button>Segurança</button><button>Cobrança</button></div>`, codigo: `<div class="tabs">\n  <button class="active">Perfil</button>\n  <button>Segurança</button>\n</div>` },
+  { id: "breadcrumb", categoria: "navegacao", titulo: "Breadcrumb", descricao: "Trilha de navegação que mostra a localização atual dentro da hierarquia do site.", demo: `<div class="breadcrumb-mini"><a href="#">Início</a> / <a href="#">Cursos</a> / <span>Tema 07</span></div>`, codigo: `<nav class="breadcrumb">\n  Início / Cursos / Tema 07\n</nav>` },
+  { id: "pagination", categoria: "navegacao", titulo: "Paginação", descricao: "Divide grandes conjuntos de conteúdo em páginas navegáveis.", demo: `<div class="pagination-mini"><button>‹</button><button class="active">1</button><button>2</button><button>3</button><button>›</button></div>`, codigo: `<div class="pagination">\n  <button class="active">1</button>\n  <button>2</button>\n</div>` },
+  { id: "navbar", categoria: "navegacao", titulo: "Navbar", descricao: "Barra de navegação principal, fixa no topo da página.", demo: `<div class="navbar-mini"><strong>Marca</strong><span class="links">Início · Sobre · Contato</span></div>`, codigo: `<nav class="navbar">\n  <strong>Marca</strong>\n  <div class="links">Início · Sobre</div>\n</nav>` },
+  { id: "stepper", categoria: "navegacao", titulo: "Stepper", descricao: "Mostra o progresso do usuário em um processo de várias etapas.", demo: `<div class="stepper-mini"><div class="dot done">1</div><div class="line"></div><div class="dot done">2</div><div class="line"></div><div class="dot">3</div></div>`, codigo: `<div class="stepper">\n  <span class="dot done">1</span>\n  <span class="dot">2</span>\n</div>` },
+  { id: "drawer", categoria: "navegacao", titulo: "Drawer (gaveta)", descricao: "Painel lateral que desliza sobre o conteúdo, usado em menus e filtros.", demo: `<div style="position:relative;width:100%;height:100px;"><div class="drawer-mini">Menu<br>lateral</div></div>`, codigo: `<aside class="drawer">\n  Menu lateral\n</aside>` },
+  { id: "tabela", categoria: "conteudo", titulo: "Tabela", descricao: "Exibe dados estruturados em linhas e colunas.", demo: `<table class="table-mini"><tr><th>Nome</th><th>Status</th></tr><tr><td>Ana</td><td>Ativa</td></tr><tr><td>Bruno</td><td>Pendente</td></tr></table>`, codigo: `<table>\n  <tr><th>Nome</th><th>Status</th></tr>\n  <tr><td>Ana</td><td>Ativa</td></tr>\n</table>` },
+  { id: "divider", categoria: "estrutura", titulo: "Divider", descricao: "Linha fina que separa visualmente seções ou grupos de conteúdo.", demo: `<div style="width:100%;border-top:1px solid var(--border)"></div>`, codigo: `<hr class="divider">` },
+];
+
+function renderizarComponentes(lista) {
+  const grid = document.getElementById("componentes-grid");
+  const contador = document.getElementById("contador-componentes");
+  grid.innerHTML = "";
+  if (lista.length === 0) {
+    grid.innerHTML = `<div class="empty-state" style="grid-column: 1 / -1;"><div class="glyph">🔍</div><p>Nenhum componente encontrado para essa busca.</p></div>`;
+    contador.textContent = "0 componentes encontrados";
+    return;
+  }
+  contador.textContent = `${lista.length} componente${lista.length > 1 ? "s" : ""} encontrado${lista.length > 1 ? "s" : ""}`;
+  lista.forEach((comp) => {
+    const card = document.createElement("article");
+    card.className = "demo-card";
+    card.innerHTML = `
+      <div class="demo-card-head"><span class="cat">${comp.categoria}</span><h3>${comp.titulo}</h3><p>${comp.descricao}</p></div>
+      <div class="demo-tabs"><button class="demo-tab-btn active" data-view="preview">Visualização</button><button class="demo-tab-btn" data-view="code">Código</button></div>
+      <div class="demo-stage" data-panel="preview">${comp.demo}</div>
+      <pre class="demo-code" data-panel="code">${comp.codigo.replace(/</g, "&lt;")}</pre>
+    `;
+    const [previewBtn, codeBtn] = card.querySelectorAll(".demo-tab-btn");
+    const previewPanel = card.querySelector('[data-panel="preview"]');
+    const codePanel = card.querySelector('[data-panel="code"]');
+    previewBtn.addEventListener("click", () => { previewBtn.classList.add("active"); codeBtn.classList.remove("active"); previewPanel.classList.remove("hidden-panel"); codePanel.classList.remove("visible"); });
+    codeBtn.addEventListener("click", () => { codeBtn.classList.add("active"); previewBtn.classList.remove("active"); previewPanel.classList.add("hidden-panel"); codePanel.classList.add("visible"); });
+    grid.appendChild(card);
+  });
+  grid.querySelectorAll(".acc-item button").forEach((btn) => btn.addEventListener("click", () => btn.closest(".acc-item").classList.toggle("open")));
+  grid.querySelectorAll(".tabs-mini button").forEach((btn) => btn.addEventListener("click", () => { btn.parentElement.querySelectorAll("button").forEach((b) => b.classList.remove("active")); btn.classList.add("active"); }));
+}
+
+function aplicarFiltrosComponentes() {
+  const termo = document.getElementById("busca-componentes").value.trim().toLowerCase();
+  const categoriaAtiva = document.querySelector("#filtro-componentes .chip.active").dataset.categoria;
+  const filtrados = COMPONENTES.filter((c) => {
+    const bateCategoria = categoriaAtiva === "todos" || c.categoria === categoriaAtiva;
+    const bateTexto = c.titulo.toLowerCase().includes(termo) || c.descricao.toLowerCase().includes(termo);
+    return bateCategoria && bateTexto;
+  });
+  renderizarComponentes(filtrados);
+}
+
+const CATEGORIAS_GLOSSARIO = [
+  { id: "todos", nome: "Todos" }, { id: "fundamentos", nome: "Fundamentos" }, { id: "estrutura", nome: "Estrutura" },
+  { id: "navegacao", nome: "Navegação" }, { id: "inputs", nome: "Inputs" }, { id: "feedback", nome: "Feedback" }, { id: "conteudo", nome: "Conteúdo" },
+];
+
+const TERMOS = [
+  { termo: "Design System", categoria: "fundamentos", definicao: "Conjunto documentado de componentes, tokens e regras de uso que garante consistência visual e funcional entre telas e produtos.", exemplo: "Ex.: Material Design, Ant Design, Carbon." },
+  { termo: "Design Token", categoria: "fundamentos", definicao: "Menor unidade de decisão visual de um design system — cor, espaçamento, raio de borda — armazenada como variável reutilizável.", exemplo: "Ex.: --color-accent, --radius-md." },
+  { termo: "Atomic Design", categoria: "fundamentos", definicao: "Metodologia de Brad Frost que organiza a interface em cinco níveis: átomos, moléculas, organismos, templates e páginas.", exemplo: "Ex.: um botão (átomo) vira parte de um formulário (organismo)." },
+  { termo: "Átomo", categoria: "fundamentos", definicao: "Menor elemento de interface, indivisível sem perder sua função — um botão, um input, um rótulo.", exemplo: "Ex.: input, label, button." },
+  { termo: "Molécula", categoria: "fundamentos", definicao: "Combinação de átomos que formam uma unidade funcional simples, como um campo de busca com botão.", exemplo: "Ex.: input + botão de lupa." },
+  { termo: "Organismo", categoria: "fundamentos", definicao: "Agrupamento de moléculas e átomos que forma uma seção completa e reconhecível da interface.", exemplo: "Ex.: cabeçalho com logo, busca e menu." },
+  { termo: "Grid system", categoria: "fundamentos", definicao: "Estrutura de colunas e margens que organiza o layout e garante alinhamento consistente entre elementos.", exemplo: "Ex.: grid de 12 colunas." },
+  { termo: "Hierarquia visual", categoria: "fundamentos", definicao: "Ordem de importância dada aos elementos por meio de tamanho, cor, contraste e posição, guiando o olhar do usuário.", exemplo: "Ex.: título maior que o texto de apoio." },
+  { termo: "Affordance", categoria: "fundamentos", definicao: "Qualidade de um elemento que sugere, pela própria aparência, como ele deve ser usado.", exemplo: "Ex.: um botão com sombra parece clicável." },
+  { termo: "Responsividade", categoria: "fundamentos", definicao: "Capacidade de uma interface se adaptar a diferentes tamanhos de tela e dispositivos.", exemplo: "Ex.: menu que vira gaveta no celular." },
+  { termo: "Acessibilidade (a11y)", categoria: "fundamentos", definicao: "Conjunto de práticas que garante que a interface possa ser usada por pessoas com diferentes capacidades e tecnologias assistivas.", exemplo: "Ex.: contraste adequado, navegação por teclado." },
+  { termo: "Dark mode", categoria: "fundamentos", definicao: "Tema visual com fundo escuro e texto claro, reduzindo o brilho emitido pela tela.", exemplo: "Ex.: alternância entre tema claro e escuro." },
+  { termo: "Container", categoria: "estrutura", definicao: "Elemento que envolve e limita a largura do conteúdo, centralizando-o na página.", exemplo: "Ex.: div.container." },
+  { termo: "Card", categoria: "estrutura", definicao: "Bloco de conteúdo autocontido, geralmente com borda ou sombra, usado para agrupar informações relacionadas.", exemplo: "Ex.: card de produto em uma loja." },
+  { termo: "Wrapper", categoria: "estrutura", definicao: "Elemento que embrulha outro apenas para fins de estilo ou posicionamento, sem significado semântico próprio.", exemplo: "Ex.: div.wrapper." },
+  { termo: "Section", categoria: "estrutura", definicao: "Divisão temática de uma página, geralmente com seu próprio título e propósito.", exemplo: "Ex.: seção Depoimentos de uma landing page." },
+  { termo: "Divider", categoria: "estrutura", definicao: "Linha ou espaço usado para separar visualmente grupos de conteúdo.", exemplo: "Ex.: hr entre dois blocos." },
+  { termo: "Accordion", categoria: "estrutura", definicao: "Componente que expande e recolhe painéis de conteúdo, economizando espaço vertical.", exemplo: "Ex.: seção de perguntas frequentes." },
+  { termo: "Sidebar", categoria: "estrutura", definicao: "Painel lateral fixo, geralmente usado para navegação ou filtros.", exemplo: "Ex.: menu lateral de um painel administrativo." },
+  { termo: "Navbar", categoria: "navegacao", definicao: "Barra de navegação principal do site, normalmente fixa no topo da página.", exemplo: "Ex.: logo + links de menu." },
+  { termo: "Breadcrumb", categoria: "navegacao", definicao: "Trilha de links que mostra o caminho percorrido até a página atual dentro da hierarquia do site.", exemplo: "Ex.: Início / Produtos / Camisetas." },
+  { termo: "Tabs (abas)", categoria: "navegacao", definicao: "Permitem alternar entre diferentes conteúdos relacionados sem sair da página.", exemplo: "Ex.: abas Descrição e Avaliações." },
+  { termo: "Paginação", categoria: "navegacao", definicao: "Divide uma lista longa de itens em páginas menores e navegáveis.", exemplo: "Ex.: 1, 2, 3 ... 10 no rodapé de uma lista." },
+  { termo: "Drawer", categoria: "navegacao", definicao: "Painel que desliza a partir de uma borda da tela, sobrepondo o conteúdo, comum em menus mobile.", exemplo: "Ex.: menu hambúrguer que abre da lateral." },
+  { termo: "Stepper", categoria: "navegacao", definicao: "Indica o progresso do usuário em um processo dividido em etapas sequenciais.", exemplo: "Ex.: checkout em 3 passos." },
+  { termo: "Menu hambúrguer", categoria: "navegacao", definicao: "Ícone de três linhas que, ao ser clicado, revela um menu de navegação escondido — comum em telas pequenas.", exemplo: "Ex.: ícone no canto superior." },
+  { termo: "Back to top", categoria: "navegacao", definicao: "Botão flutuante que leva o usuário de volta ao topo da página após rolagem.", exemplo: "Ex.: botão no canto inferior direito." },
+  { termo: "Input", categoria: "inputs", definicao: "Campo onde o usuário digita informações, como texto, número ou senha.", exemplo: "Ex.: input type=email." },
+  { termo: "Textarea", categoria: "inputs", definicao: "Campo de texto de múltiplas linhas, usado para conteúdos mais longos.", exemplo: "Ex.: campo de comentário." },
+  { termo: "Select / Dropdown", categoria: "inputs", definicao: "Lista suspensa que permite escolher uma opção entre várias predefinidas.", exemplo: "Ex.: seletor de estado ou país." },
+  { termo: "Checkbox", categoria: "inputs", definicao: "Controle que permite marcar uma ou mais opções de forma independente.", exemplo: "Ex.: Aceito os termos de uso." },
+  { termo: "Radio button", categoria: "inputs", definicao: "Controle que permite escolher apenas uma opção dentro de um grupo mutuamente exclusivo.", exemplo: "Ex.: escolha de forma de pagamento." },
+  { termo: "Switch (toggle)", categoria: "inputs", definicao: "Controle deslizante que alterna entre dois estados, como ligado e desligado.", exemplo: "Ex.: ativar notificações." },
+  { termo: "Slider (range)", categoria: "inputs", definicao: "Permite selecionar um valor numérico dentro de um intervalo, arrastando um controle.", exemplo: "Ex.: filtro de faixa de preço." },
+  { termo: "Placeholder", categoria: "inputs", definicao: "Texto de exemplo exibido dentro de um campo vazio, que desaparece ao digitar.", exemplo: "Ex.: seu@email.com em um campo de e-mail." },
+  { termo: "Validação de formulário", categoria: "inputs", definicao: "Verificação de que os dados inseridos atendem aos critérios esperados antes do envio.", exemplo: "Ex.: aviso de e-mail inválido." },
+  { termo: "Alert / Banner", categoria: "feedback", definicao: "Mensagem de destaque usada para comunicar avisos, erros, sucesso ou informações importantes.", exemplo: "Ex.: Alterações salvas com sucesso." },
+  { termo: "Toast / Snackbar", categoria: "feedback", definicao: "Notificação temporária e discreta que aparece sobre a interface e desaparece automaticamente.", exemplo: "Ex.: Item adicionado ao carrinho." },
+  { termo: "Modal", categoria: "feedback", definicao: "Janela sobreposta que bloqueia a interação com o restante da página até ser fechada, usada para decisões importantes.", exemplo: "Ex.: confirmação antes de excluir um item." },
+  { termo: "Tooltip", categoria: "feedback", definicao: "Texto de apoio breve que aparece ao passar o cursor ou focar em um elemento.", exemplo: "Ex.: explicação de um ícone." },
+  { termo: "Skeleton loader", categoria: "feedback", definicao: "Placeholder animado que imita o formato do conteúdo final enquanto ele ainda está carregando.", exemplo: "Ex.: retângulos cinza pulsantes no lugar de texto." },
+  { termo: "Spinner", categoria: "feedback", definicao: "Indicador visual de carregamento para operações sem duração ou progresso definido.", exemplo: "Ex.: círculo girando durante um envio." },
+  { termo: "Progress bar", categoria: "feedback", definicao: "Barra que indica visualmente o avanço de uma tarefa com duração ou etapas conhecidas.", exemplo: "Ex.: barra de upload de arquivo." },
+  { termo: "Estado vazio (empty state)", categoria: "feedback", definicao: "Tela ou trecho exibido quando não há conteúdo para mostrar, orientando o próximo passo do usuário.", exemplo: "Ex.: Nenhum resultado encontrado." },
+  { termo: "Badge", categoria: "conteudo", definicao: "Rótulo pequeno e destacado usado para indicar status, categoria ou contagem.", exemplo: "Ex.: Novo, contador de notificações." },
+  { termo: "Chip / Tag", categoria: "conteudo", definicao: "Elemento compacto que representa uma opção, filtro ou atributo selecionável ou removível.", exemplo: "Ex.: tags de filtro em uma busca." },
+  { termo: "Avatar", categoria: "conteudo", definicao: "Representação visual de um usuário, geralmente uma foto ou as iniciais do nome.", exemplo: "Ex.: foto de perfil em um comentário." },
+  { termo: "Tabela", categoria: "conteudo", definicao: "Estrutura que organiza dados em linhas e colunas para facilitar comparação e leitura.", exemplo: "Ex.: lista de usuários com nome e status." },
+  { termo: "Rating (avaliação)", categoria: "conteudo", definicao: "Representação visual de uma nota ou avaliação, geralmente por estrelas.", exemplo: "Ex.: quatro de cinco estrelas em um produto." },
+  { termo: "Lista", categoria: "conteudo", definicao: "Sequência vertical de itens relacionados, ordenados ou não.", exemplo: "Ex.: lista de tarefas." },
+];
+
+function renderizarGlossario(lista) {
+  const container = document.getElementById("glossario-lista");
+  const contador = document.getElementById("contador-glossario");
+  container.innerHTML = "";
+  if (lista.length === 0) {
+    container.innerHTML = `<div class="empty-state"><div class="glyph">📖</div><p>Nenhum termo encontrado para essa busca.</p></div>`;
+    contador.textContent = "0 termos encontrados";
+    return;
+  }
+  contador.textContent = `${lista.length} termo${lista.length > 1 ? "s" : ""} encontrado${lista.length > 1 ? "s" : ""}`;
+  lista.forEach((t) => {
+    const row = document.createElement("div");
+    row.className = "term-row";
+    row.innerHTML = `<div class="term-name"><strong>${t.termo}</strong><span class="cat">${t.categoria}</span></div><div class="term-def"><p>${t.definicao}</p><span class="example">${t.exemplo}</span></div>`;
+    container.appendChild(row);
+  });
+}
+
+function aplicarFiltrosGlossario() {
+  const termoBusca = document.getElementById("busca-glossario").value.trim().toLowerCase();
+  const categoriaAtiva = document.querySelector("#filtro-glossario .chip.active").dataset.categoria;
+  const filtrados = TERMOS.filter((t) => {
+    const bateCategoria = categoriaAtiva === "todos" || t.categoria === categoriaAtiva;
+    const bateTexto = t.termo.toLowerCase().includes(termoBusca) || t.definicao.toLowerCase().includes(termoBusca);
+    return bateCategoria && bateTexto;
+  });
+  renderizarGlossario(filtrados);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const chipsComponentes = document.getElementById("filtro-componentes");
+  CATEGORIAS_COMPONENTES.forEach((cat, i) => {
+    const chip = document.createElement("button");
+    chip.className = "chip" + (i === 0 ? " active" : "");
+    chip.textContent = cat.nome;
+    chip.dataset.categoria = cat.id;
+    chip.addEventListener("click", () => { chipsComponentes.querySelectorAll(".chip").forEach((c) => c.classList.remove("active")); chip.classList.add("active"); aplicarFiltrosComponentes(); });
+    chipsComponentes.appendChild(chip);
+  });
+  document.getElementById("busca-componentes").addEventListener("input", aplicarFiltrosComponentes);
+  renderizarComponentes(COMPONENTES);
+
+  const chipsGlossario = document.getElementById("filtro-glossario");
+  CATEGORIAS_GLOSSARIO.forEach((cat, i) => {
+    const chip = document.createElement("button");
+    chip.className = "chip" + (i === 0 ? " active" : "");
+    chip.textContent = cat.nome;
+    chip.dataset.categoria = cat.id;
+    chip.addEventListener("click", () => { chipsGlossario.querySelectorAll(".chip").forEach((c) => c.classList.remove("active")); chip.classList.add("active"); aplicarFiltrosGlossario(); });
+    chipsGlossario.appendChild(chip);
+  });
+  document.getElementById("busca-glossario").addEventListener("input", aplicarFiltrosGlossario);
+  renderizarGlossario(TERMOS);
+});
+</script>
+</body>
+</html>
